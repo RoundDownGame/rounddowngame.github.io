@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>RoundDown</title>
+        <link href='https://fonts.googleapis.com/css?family=Roboto:700,500,400,600' rel='stylesheet'>
+        <style>
+            body {
+                font-family: 'Roboto';
+                font-size: 4vh;
+                margin: 0px;
+                font-weight: 400;
+                text-align: center;
+                background-color: #CECEEC;
+            }
+
+            button {
+                font-family: 'Roboto';
+            }
+
+            div .start-page-grid {
+                display: grid;
+                align-content: space-evenly;
+                justify-content: space-evenly;
+                min-height: 100vh;
+            }
+
+            .game-title {
+                font-size: 12vh;
+                font-weight: 700;
+            }
+
+            .game-subtitle, .winner-announcement-text {
+                font-size: 8vh;
+                font-weight: 500;
+            }
+
+            .game-joke-title {
+                font-size: 1.5vh;
+                font-weight: 400;
+            }
+
+            .start-title-button, .start-title-both-button, .ending-back-button {
+                font-size: 4vh;
+                font-weight: 400;
+                background-color: rgb(255, 255, 255);
+                border-width: 0px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .start-title-both-button {
+                font-size: 3vh;
+                font-weight: 400;
+            }
+
+            .start-title-button-split {
+                height: 4px;
+            }
+
+            .start-page-version {
+                position: absolute;
+                left: 4px;
+                top: calc(100vh - 2vh - 4px);
+                color: #999999;
+                font-size: 2vh;
+            }
+
+            .start-page-cr {
+                position: absolute;
+                left: calc(100vw - 20vw - 4px);
+                top: calc(100vh - 2vh - 4px);
+                color: #999999;
+                font-size: 2vh;
+                width: 20vw;
+                text-align: right;
+            }
+
+            .main-game-flex {
+                width: 100vw;
+                height: 88vh;
+                display: flex;
+            }
+
+            .p1-field, .p2-field {
+                height: max-content;
+                width: 50vw;
+            }
+
+            .main-game-header-separator {
+                height: 2vh;
+                background-color: rgb(12, 12, 12);
+            }
+
+            .main-game-separator {
+                width: 2vh;
+                height: 88vh;
+                background-color: rgb(12, 12, 12);
+            }
+
+            .main-game-header {
+                width: 100vw;
+                height: 10vh;
+                background-color: #DDCEEC;
+                display: flex;
+                justify-content: space-evenly;
+                vertical-align: middle;
+            }
+
+            .p1-points-display, .p2-points-display {
+                margin-top: 0px;
+                margin-bottom: 0px;
+                font-size: 4vh;
+                font-weight: 500;
+                width: 50vw;
+            }
+
+            .p1-points-text, .p2-points-text {
+                margin-top: 0px;
+                margin-bottom: 0px;
+            }
+
+            .p1-question-type-text, .p2-question-type-text {
+                margin-top: 2vh;
+            }
+
+            .timer-display {
+                margin-top: 1.5vh;
+                margin-bottom: 0px;
+                font-size: 6vh;
+                font-weight: 700;
+                position: absolute;
+            }
+
+            .back-to-title-button {
+                font-size: 4vh;
+                font-weight: 400;
+                background-color: rgb(255, 255, 255);
+                border-width: 0px;
+                border-radius: 4px;
+                cursor: pointer;
+                position: absolute;
+                width: 6vh;
+                height: 6vh;
+                margin-top: 2vh;
+                left: 2vh;
+            }
+
+            .back-button-svg-align-flex {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            p#point-subtitle {
+                font-weight: 400;
+                font-size: 2vh;
+                margin: 1.5vh 0 0
+            }
+
+            .p1-question-starting-number, .p2-question-starting-number {
+                font-weight: 700;
+                font-size: 8vh;
+                margin: 0px;
+                margin-top: 2vh;
+                margin-bottom: 2vh;
+            }
+
+            button#main-answer, .ending-screen-leaderboard-item {
+                font-size: 4vh;
+                font-weight: 400;
+                background-color: rgb(255, 255, 255);
+                border-width: 0px;
+                border-radius: 4px;
+                cursor: pointer;
+                width: 32vw;
+                height: 10vh;
+                margin-bottom: 2vh;        
+            }
+
+            .wait-for-start-text {
+                display: inline;
+                font-size: 10vh;
+                font-weight: 700;
+
+                text-align: center;
+                vertical-align: middle;
+
+                width: 100%;
+                height: calc(100% - 32vh);
+
+                margin-top: 32vh;
+            }
+
+            .results-title {
+                margin-top: 1.5vh;
+                margin-bottom: 0px;
+                font-size: 6vh;
+                font-weight: 700;
+                position: absolute;
+            }
+
+            .ending-screen-leaderboard-item {
+                width: 48vw;
+                display: flex;
+                flex-direction: row;
+            }
+
+            .ending-screen-flex {
+                display: flex;
+                flex-direction: row;
+                width: 100vw;
+                justify-content: space-around;
+            }
+
+            .ending-screen-leaderboard-place {
+                width: 8vw;
+                font-size: 8vh;
+                font-weight: 700;
+                margin-left: 0.75vw;
+                margin-right: 2vw;
+                vertical-align: middle;
+                line-height: 10vh;
+            }
+
+            .ending-screen-leaderboard-player, .ending-screen-leaderboard-points {
+                width: 24vw;
+                font-size: 4vh;
+                font-weight: 500;
+                margin-right: 2vw;
+                vertical-align: middle;
+                line-height: 10vh;
+            }
+
+            .ending-screen-leaderboard-points {
+                font-weight: 600;
+                margin: 0px;
+            }
+        </style>
+        <script>
+            let timerEnabled = 0;
+
+            let currentURL;
+            function changeURLParams(key, value) {
+                currentURL = new URL(window.location);
+                currentURL.searchParams.set(key, value);
+                history.replaceState(null, "", currentURL);
+            };
+            function getURLParams(key) {
+                currentURL = new URL(window.location);
+                return currentURL.searchParams.get(key);
+            };
+            function nukeURLParam(key) {
+                currentURL = new URL(window.location);
+                currentURL.searchParams.delete(key);
+                history.replaceState(null, "", currentURL);
+            };
+
+            window.addEventListener("load", (event) => {
+                if (getURLParams("page") == null) {
+                    document.querySelector(".start-page-container").style.display = "block";
+                    document.querySelector(".main-game-container").style.display = "none";
+                    document.querySelector(".ending-screen-container").style.display = "none";
+                };
+            });
+
+            async function backToStartScreen() {
+                console.log("player went back")
+                killTimer()
+                document.querySelector(".timer-display").innerHTML = ("");
+                nukeURLParam("page")
+                document.querySelector(".start-page-container").style.display = "block";
+                document.querySelector(".main-game-container").style.display = "none";
+                document.querySelector(".ending-screen-container").style.display = "none";
+            }
+
+            let gameType;
+            let time;
+
+            let p1Score;
+            let p1Question;
+            let p1Accuracy;
+            let p1PossibleAnswers;
+            let p1Answer;
+            let p1AnswerGiven = "0";
+
+            let p2Score;
+            let p2Question;
+            let p2Accuracy;
+            let p2PossibleAnswers;
+            let p2Answer;
+            let p2AnswerGiven = "0";
+
+            function delay(time) {
+                return new Promise(resolve => setTimeout(resolve, time));
+            }
+
+            let start;
+            let delta;
+            let currentTime
+            let globalTimeLeft;
+            let gameTimerObject;
+            async function startTimer() {
+                if (timerEnabled == 1) {
+                    start = Date.now();
+                    gameTimerObject = setInterval(function() {
+                        delta = Date.now() - start; 
+                        currentTime = Math.floor(delta / 1000);
+                        currentTime = 30 - currentTime;
+                        globalTimeLeft = currentTime;
+                        document.querySelector(".timer-display").innerHTML = ([String(globalTimeLeft), "s"].join(""));
+
+                        if (globalTimeLeft <= 0) {
+                            killTimer();
+                            endGame();
+                        };
+                    }, 100);
+                };
+            }
+
+            function killTimer() {
+                console.log("timer killed")
+                timerEnabled = 0
+                clearInterval(gameTimerObject);
+                currentTime = 0;
+                globalTimeLeft = 0;
+            }
+
+            let winner;
+            function endGame() {
+                console.log("out of time")
+
+                document.querySelector(".start-page-container").style.display = "none";
+                document.querySelector(".main-game-container").style.display = "none";
+                document.querySelector(".ending-screen-container").style.display = "block";
+
+                if (p1Score == p2Score) {
+                    winner = 0
+                } else if (p1Score > p2Score) {
+                    winner = 1
+                } else if (p2Score > p1Score) {
+                    winner = 2
+                }
+
+                if (winner == 0) {
+                    document.querySelector(".winner-announcement-text").innerHTML = "Draw!";
+                } else {
+                    document.querySelector(".winner-announcement-text").innerHTML = ["Player ", String(winner), " wins!"].join("");
+                }
+
+                if (winner == 1) {
+                    document.querySelector("div#p1.ending-screen-leaderboard-player").innerHTML = "Player 1";
+                    document.querySelector("div#p2.ending-screen-leaderboard-player").innerHTML = "Player 2";
+
+                    document.querySelector("div#p1.ending-screen-leaderboard-points").innerHTML = String(p1Score);
+                    document.querySelector("div#p2.ending-screen-leaderboard-points").innerHTML = String(p2Score);
+                } else if (winner == 2) {
+                    document.querySelector("div#p1.ending-screen-leaderboard-player").innerHTML = "Player 2";
+                    document.querySelector("div#p2.ending-screen-leaderboard-player").innerHTML = "Player 1";
+
+                    document.querySelector("div#p1.ending-screen-leaderboard-points").innerHTML = String(p2Score);
+                    document.querySelector("div#p2.ending-screen-leaderboard-points").innerHTML = String(p1Score);
+                } else {
+                    document.querySelector("div#p1.ending-screen-leaderboard-player").innerHTML = "Player 1";
+                    document.querySelector("div#p2.ending-screen-leaderboard-player").innerHTML = "Player 2";
+
+                    document.querySelector("div#p1.ending-screen-leaderboard-points").innerHTML = String(p1Score);
+                    document.querySelector("div#p2.ending-screen-leaderboard-points").innerHTML = String(p2Score);
+                }
+            }
+
+            function buildUpToTimer() {
+                document.querySelector(".timer-display").innerHTML = "";
+                document.querySelector(".wait-for-start-text").innerHTML = "READY";
+                delay(1000).then(() => document.querySelector(".wait-for-start-text").innerHTML = "SET");
+                delay(2000).then(() => document.querySelector(".wait-for-start-text").innerHTML = "GO!");
+                delay(3000).then(() => beginMainGame());
+            }
+
+            async function updatePoints() {
+                if (p1Score < 0) {
+                    p1Score = 0
+                }
+                if (p2Score < 0) {
+                    p2Score = 0
+                }
+
+                document.querySelector(".p1-points-text").innerHTML = String(p1Score);
+                document.querySelector(".p2-points-text").innerHTML = String(p2Score);
+            }
+
+            async function resetQuestionColours() {
+                document.querySelector(".p1-answer-a").style.backgroundColor = "#ffffff"
+                document.querySelector(".p1-answer-b").style.backgroundColor = "#ffffff"
+                document.querySelector(".p1-answer-c").style.backgroundColor = "#ffffff"
+                document.querySelector(".p1-answer-d").style.backgroundColor = "#ffffff"
+
+                document.querySelector(".p2-answer-a").style.backgroundColor = "#ffffff"
+                document.querySelector(".p2-answer-b").style.backgroundColor = "#ffffff"
+                document.querySelector(".p2-answer-c").style.backgroundColor = "#ffffff"
+                document.querySelector(".p2-answer-d").style.backgroundColor = "#ffffff"
+            }
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            } // ES6 implementation of Durstenfeld shuffle
+
+            function getRandomNumber(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            function roundTo(num, decimalPlaces) {
+                return Number(Math.round(num + "e" + decimalPlaces) + "e-" + decimalPlaces);
+            }
+
+            function floorTo(num, decimalPlaces) {
+                return Number(Math.floor(num + "e" + decimalPlaces) + "e-" + decimalPlaces);
+            }
+
+            function ceilTo(num, decimalPlaces) {
+                return Number(Math.ceil(num + "e" + decimalPlaces) + "e-" + decimalPlaces);
+            }
+
+            function p1AnswerQuestion(choice) {
+                p1AnswerGiven = String(choice)
+                console.log(p1AnswerGiven)
+                if (p1AnswerGiven == (p1PossibleAnswers.indexOf(p1Answer))) {
+                    console.log("correct");
+                    p1Score = p1Score + 1;
+                    if (p1AnswerGiven == "0") {
+                        document.querySelector(".p1-answer-a").style.backgroundColor = "#88e788"
+                    } else if (p1AnswerGiven == "1") {
+                        document.querySelector(".p1-answer-b").style.backgroundColor = "#88e788"
+                    } else if (p1AnswerGiven == "2") {
+                        document.querySelector(".p1-answer-c").style.backgroundColor = "#88e788"
+                    } else if (p1AnswerGiven == "3") {
+                        document.querySelector(".p1-answer-d").style.backgroundColor = "#88e788"
+                    }
+                } else {
+                    console.log("wrong");
+                    p1Score = p1Score - 1;
+                    if (p1AnswerGiven == "0") {
+                        document.querySelector(".p1-answer-a").style.backgroundColor = "#e78888"
+                    } else if (p1AnswerGiven == "1") {
+                        document.querySelector(".p1-answer-b").style.backgroundColor = "#e78888"
+                    } else if (p1AnswerGiven == "2") {
+                        document.querySelector(".p1-answer-c").style.backgroundColor = "#e78888"
+                    } else if (p1AnswerGiven == "3") {
+                        document.querySelector(".p1-answer-d").style.backgroundColor = "#e78888"
+                    }
+                };
+
+                setTimeout(() => {
+                    resetQuestionColours()
+                    updatePoints();
+                    p1AskQuestion();
+                }, 300);
+            }
+
+            function p2AnswerQuestion(choice) {
+                p2AnswerGiven = String(choice)
+                if (p2AnswerGiven == (p2PossibleAnswers.indexOf(p2Answer))) {
+                    console.log("correct");
+                    p2Score = p2Score + 1;
+                    if (p2AnswerGiven == "0") {
+                        document.querySelector(".p2-answer-a").style.backgroundColor = "#88e788"
+                    } else if (p2AnswerGiven == "1") {
+                        document.querySelector(".p2-answer-b").style.backgroundColor = "#88e788"
+                    } else if (p2AnswerGiven == "2") {
+                        document.querySelector(".p2-answer-c").style.backgroundColor = "#88e788"
+                    } else if (p2AnswerGiven == "3") {
+                        document.querySelector(".p2-answer-d").style.backgroundColor = "#88e788"
+                    }
+                } else {
+                    console.log("wrong");
+                    p2Score = p2Score - 1;
+                    if (p2AnswerGiven == "0") {
+                        document.querySelector(".p2-answer-a").style.backgroundColor = "#e78888"
+                    } else if (p2AnswerGiven == "1") {
+                        document.querySelector(".p2-answer-b").style.backgroundColor = "#e78888"
+                    } else if (p2AnswerGiven == "2") {
+                        document.querySelector(".p2-answer-c").style.backgroundColor = "#e78888"
+                    } else if (p2AnswerGiven == "3") {
+                        document.querySelector(".p2-answer-d").style.backgroundColor = "#e78888"
+                    }
+                };
+
+                setTimeout(() => {
+                    resetQuestionColours()
+                    updatePoints();
+                    p2AskQuestion();
+                }, 300);
+            }
+
+            function p1AskQuestion() {
+                p1AnswerGiven = "0"
+                p1Question = roundTo(getRandomNumber(0.11111, 99.99999), 5);
+                p1Accuracy = roundTo(getRandomNumber(0, 3), 0);
+                p1PossibleAnswers = [floorTo(p1Question, p1Accuracy), ceilTo(p1Question, p1Accuracy), (floorTo(p1Question, p1Accuracy) + roundTo(getRandomNumber(2, 4), 0)), (ceilTo(p1Question, p1Accuracy) - roundTo(getRandomNumber(2, 4), 0))]
+
+                shuffleArray(p1PossibleAnswers) // calls my ES6 implementation of Durstenfeld shuffle
+
+                if (gameType == "r") {
+                    p1Answer = roundTo(p1Question, p1Accuracy)
+                    document.querySelector(".p1-question-type-text").innerHTML = "Round"
+                } else if (gameType == "t") {
+                    p1Answer = floorTo(p1Question, p1Accuracy)
+                    document.querySelector(".p1-question-type-text").innerHTML = "Truncate"
+                } // "both" mode isn't complete
+
+                document.querySelector(".p1-question-starting-number").innerHTML = String(p1Question)
+                if (p1Accuracy == 0) {
+                    document.querySelector(".p1-question-accuracy-text").innerHTML = "to the nearest integer"
+                } else if (p1Accuracy == 1) {
+                    document.querySelector(".p1-question-accuracy-text").innerHTML = ["to ", String(p1Accuracy), " decimal place"].join("")
+                } else {
+                    document.querySelector(".p1-question-accuracy-text").innerHTML = ["to ", String(p1Accuracy), " decimal places"].join("")
+                }
+
+                document.querySelector(".p1-answer-a").innerHTML = String(roundTo(p1PossibleAnswers[0], p1Accuracy).toFixed(p1Accuracy))
+                document.querySelector(".p1-answer-b").innerHTML = String(roundTo(p1PossibleAnswers[1], p1Accuracy).toFixed(p1Accuracy))
+                document.querySelector(".p1-answer-c").innerHTML = String(roundTo(p1PossibleAnswers[2], p1Accuracy).toFixed(p1Accuracy))
+                document.querySelector(".p1-answer-d").innerHTML = String(roundTo(p1PossibleAnswers[3], p1Accuracy).toFixed(p1Accuracy))
+            }
+
+            function p2AskQuestion() {
+                p2AnswerGiven = "0"
+                p2Question = roundTo(getRandomNumber(0.11111, 99.99999), 5);
+                p2Accuracy = roundTo(getRandomNumber(0, 3), 0);
+                p2PossibleAnswers = [floorTo(p2Question, p2Accuracy), ceilTo(p2Question, p2Accuracy), (floorTo(p2Question, p2Accuracy) + roundTo(getRandomNumber(2, 4), 0)), (ceilTo(p2Question, p2Accuracy) - roundTo(getRandomNumber(2, 4), 0))]
+
+                shuffleArray(p2PossibleAnswers) // calls my ES6 implementation of Durstenfeld shuffle
+
+                if (gameType == "r") {
+                    p2Answer = roundTo(p2Question, p2Accuracy)
+                    document.querySelector(".p2-question-type-text").innerHTML = "Round"
+                } else if (gameType == "t") {
+                    p2Answer = floorTo(p2Question, p2Accuracy)
+                    document.querySelector(".p2-question-type-text").innerHTML = "Truncate"
+                } // "both" mode isn't complete
+
+                document.querySelector(".p2-question-starting-number").innerHTML = String(p2Question)
+                if (p2Accuracy == 0) {
+                    document.querySelector(".p2-question-accuracy-text").innerHTML = "to the nearest integer"
+                } else if (p2Accuracy == 1) {
+                    document.querySelector(".p2-question-accuracy-text").innerHTML = ["to ", String(p2Accuracy), " decimal place"].join("")
+                } else {
+                    document.querySelector(".p2-question-accuracy-text").innerHTML = ["to ", String(p2Accuracy), " decimal places"].join("")
+                }
+
+                document.querySelector(".p2-answer-a").innerHTML = String(roundTo(p2PossibleAnswers[0], p2Accuracy).toFixed(p2Accuracy))
+                document.querySelector(".p2-answer-b").innerHTML = String(roundTo(p2PossibleAnswers[1], p2Accuracy).toFixed(p2Accuracy))
+                document.querySelector(".p2-answer-c").innerHTML = String(roundTo(p2PossibleAnswers[2], p2Accuracy).toFixed(p2Accuracy))
+                document.querySelector(".p2-answer-d").innerHTML = String(roundTo(p2PossibleAnswers[3], p2Accuracy).toFixed(p2Accuracy))
+            }
+
+            async function beginMainGame() {
+                p1AskQuestion();
+
+                p1Score = 0;
+                p2Score = 0;
+                updatePoints();
+
+                document.querySelector(".p1-field").style.display = "block";
+                document.querySelector(".p2-field").style.display = "block";
+                document.querySelector(".main-game-separator").style.display = "block";
+                document.querySelector(".wait-for-start-text").style.display = "none";
+                document.querySelector(".main-game-flex").style.backgroundColor = "#CECEEC";
+
+                timerEnabled = 1;
+                globalTimeLeft = 30;
+                console.log("timer enabled as game was started")
+                startTimer();
+
+                p1AskQuestion();
+                p2AskQuestion();
+            };
+
+            async function startGame(type) {
+                changeURLParams("page", "game")
+                document.querySelector(".start-page-container").style.display = "none";
+                document.querySelector(".main-game-container").style.display = "block";
+                document.querySelector(".ending-screen-container").style.display = "none";
+
+                document.querySelector(".p1-field").style.display = "none";
+                document.querySelector(".p2-field").style.display = "none";
+                document.querySelector(".main-game-separator").style.display = "none";
+                document.querySelector(".wait-for-start-text").style.display = "inline";
+                document.querySelector(".main-game-flex").style.backgroundColor = "#A4A4BC";
+
+                document.querySelector(".p1-points-text").innerHTML = String(0);
+                document.querySelector(".p2-points-text").innerHTML = String(0);
+                
+                gameType = type;
+                buildUpToTimer();
+            };
+        </script>
+    </head>
+    <body>
+        <div class="start-page-container">
+                <div class="start-page-version">0.01a</div>
+                <div class="start-page-cr">(c) 2026 lostsss, Released under GPLv3</div>
+                <div class="start-page-grid">
+                    <div></div><div></div><div></div><div></div>
+                    <div class="start-title-container">
+                        <div class="game-title">RoundDown</div>
+                        <div class="game-subtitle">Round numbers with a friend!</div>
+                        <div class="game-joke-title">(or a foe)</div><br>
+                        <div class="game-type-prompt">Choose a gamemode:</div><br>
+                        <button class="start-title-button" style="margin-right: 4px" onclick="startGame('r')">Rounding</button>
+                        <button class="start-title-button" onclick="startGame('t')">Truncating</button><br>
+                        <div class="start-title-button-split"></div>
+                        <button class="start-title-both-button" onclick="startGame('b')" style="display: none;">Both (HARD)</button>
+                    </div>
+                    <div></div><div></div><div></div><div></div>
+                </div>
+            </div>
+        <div class="main-game-container">
+            <div class="main-game-header">
+                <button class="back-to-title-button" onclick="backToStartScreen()">
+                    <div class="back-button-svg-align-flex">
+                        <div style="width: 0px; height: 0px;"></div>
+                        <!-- https://feathericons.dev/?search=arrow-left-circle&iconset=feather -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" class="main-grid-item-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 8 8 12 12 16" />
+                            <line x1="16" x2="8" y1="12" y2="12" />
+                        </svg>
+                        <div style="width: 0px; height: 0px;"></div>
+                    </div>
+                </button>
+                <div class="p1-points-display"><p id="point-subtitle">Points:</p><p class="p1-points-text">12</p></div>
+                <p class="timer-display">30s</p>
+                <div class="p2-points-display"><p id="point-subtitle">Points:</p><p class="p2-points-text">8</p></div>
+            </div>
+            <div class="main-game-header-separator"></div>
+            <div class="main-game-flex">
+                <div class="p1-field">
+                    <p class="game-joke-title" style="padding-bottom: 0px; padding-top: 4px; margin-bottom: 0px; font-size: 1.5vh;">Player 1</p>
+                    <p class="p1-question-type-text">Round</p>
+                    <p class="p1-question-starting-number">0</p>
+                    <p class="p1-question-accuracy-text">to 0 decimal place</p>
+
+                    <button class="p1-answer-a" id="main-answer" onclick="p1AnswerQuestion(0)">0</button><br>
+                    <button class="p1-answer-b" id="main-answer" onclick="p1AnswerQuestion(1)">0</button><br>
+                    <button class="p1-answer-c" id="main-answer" onclick="p1AnswerQuestion(2)">0</button><br>
+                    <button class="p1-answer-d" id="main-answer" onclick="p1AnswerQuestion(3)">0</button><br>
+                </div>
+                <div class="main-game-separator"></div>
+                <div class="p2-field">
+                    <p class="game-joke-title" style="padding-bottom: 0px; padding-top: 4px; margin-bottom: 0px; font-size: 1.5vh;">Player 2</p>
+                    <p class="p2-question-type-text">Round</p>
+                    <p class="p2-question-starting-number">0</p>
+                    <p class="p2-question-accuracy-text">to 0 decimal place</p>
+
+                    <button class="p2-answer-a" id="main-answer" onclick="p2AnswerQuestion(0)">0</button><br>
+                    <button class="p2-answer-b" id="main-answer" onclick="p2AnswerQuestion(1)">0</button><br>
+                    <button class="p2-answer-c" id="main-answer" onclick="p2AnswerQuestion(2)">0</button><br>
+                    <button class="p2-answer-d" id="main-answer" onclick="p2AnswerQuestion(3)">0</button><br>
+                </div>
+
+                <div class="wait-for-start-text">Get Ready!</div>
+            </div>
+        </div>
+        <div class="ending-screen-container">
+            <div class="main-game-header">
+                <p class="results-title">Results</p>
+            </div>
+            <div class="main-game-header-separator"></div>
+            <p class="winner-announcement-text" style="padding-top: 4vh; padding-bottom: 12vh; margin-bottom: 0px;">Player 1 wins!</p>
+
+            <div class="ending-screen-flex">
+                <div></div>
+                <div class="ending-screen-leaderboard-container">
+                    <div class="ending-screen-leaderboard-item" id="p1">
+                        <div class="ending-screen-leaderboard-place" id="p1">1st</div>
+                        <div class="ending-screen-leaderboard-player" id="p1">Player 1</div>
+                        <div class="ending-screen-leaderboard-points" id="p1">0</div>
+                    </div>
+                    <div class="ending-screen-leaderboard-item" id="p2">
+                        <div class="ending-screen-leaderboard-place" id="p2">2nd</div>
+                        <div class="ending-screen-leaderboard-player" id="p2">Player 2</div>
+                        <div class="ending-screen-leaderboard-points" id="p2">0</div>
+                    </div>
+
+                    <button class="ending-back-button" onclick="backToStartScreen()" style="margin-top: 8vh;">Back to Main Menu</button>
+                </div>
+                <div></div>
+            </div>
+        </div>
+    </body>
+</html>
